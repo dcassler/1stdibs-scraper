@@ -4,6 +4,15 @@ import time
 from bs4 import BeautifulSoup
 import re
 
+# Data used: 
+# picList = array of pictures
+# dimInch, dimCen, dimensions of obj 
+# aboutData = about
+
+
+
+
+
 url = 'https://www.1stdibs.com/furniture/seating/club-chairs/pair-of-modern-style-club-chairs/id-f_18808132/'
 response = requests.get(url)
 print(response)
@@ -14,12 +23,12 @@ result = BeautifulSoup(response.text, "html.parser")
 
 # Grab all images in carousel
 pictureGroup = result.find('ul', attrs={'data-tn':'carousel-list-wrapper'})
-parsedGroup = pictureGroup.contents
+parsedPictureGroup = pictureGroup.contents
 
 # Parse pictures to array
 i = 0
 picList = [] # Array of all pictures
-while i < len(parsedGroup):
+while i < len(parsedPictureGroup):
     temp = str(pictureGroup.contents[i].find('img'))
     if temp != 'None':
         x = temp.split('src="')
@@ -37,5 +46,21 @@ finalFirst = fixedFirst[0]
 
 picList[0] = finalFirst
 
+# Grab Item Details
 
+# Dimensions
+dimDetailGroup = result.find('div', attrs={'data-tn':'pdp-spec-dimensions'})
+dimpullOutData = str(dimDetailGroup)
+dimpullOutData = dimpullOutData.split('span>')
+tempDimInch = dimpullOutData[1]
+tempDimCen = dimpullOutData[4]
+dimInch = tempDimInch.replace('</', '')
+dimCen = tempDimCen.replace('</', '')
+#print(dimInch, dimCen)
 
+# About
+aboutDetailGroup = result.find('span', attrs={'data-tn':'pdp-item-description-content'})
+aboutPullOutData = str(aboutDetailGroup)
+aboutPullOutData = aboutPullOutData.split('>')
+aboutData = aboutPullOutData[1].replace('</span', '')
+print(aboutData)
