@@ -58,9 +58,17 @@ dimInch = tempDimInch.replace('</', '')
 dimCen = tempDimCen.replace('</', '')
 #print(dimInch, dimCen)
 
-# About
+# About Section: Holds data from the about section to store in each item descripton
 aboutDetailGroup = result.find('span', attrs={'data-tn':'pdp-item-description-content'})
 aboutPullOutData = str(aboutDetailGroup)
 aboutPullOutData = aboutPullOutData.split('>')
 aboutData = aboutPullOutData[1].replace('</span', '')
-print(aboutData)
+#print(aboutData)
+
+# Price 
+priceDetailGroup = result.find('span', attrs={'data-tn':'price-amount'})
+pricePullOutData = str(priceDetailGroup)
+pricePullOutData = pricePullOutData.split('>')
+priceData = pricePullOutData[1].replace('</span', '')
+print(priceData)
+
