@@ -52,11 +52,20 @@ picList[0] = finalFirst
 dimDetailGroup = result.find('div', attrs={'data-tn':'pdp-spec-dimensions'})
 dimpullOutData = str(dimDetailGroup)
 dimpullOutData = dimpullOutData.split('span>')
-tempDimInch = dimpullOutData[1]
-tempDimCen = dimpullOutData[4]
-dimInch = tempDimInch.replace('</', '')
-dimCen = tempDimCen.replace('</', '')
-#print(dimInch, dimCen)
+tempDimHeight = dimpullOutData[1]
+tempDimWidth = dimpullOutData[4]
+tempDimDepth = dimpullOutData[7]
+dimSeat = ''
+if dimpullOutData[10]:
+    tempSeatHeight = dimpullOutData[10]
+    dimSeat = tempSeatHeight.replace('</','')
+#for x in dimpullOutData:
+   # print(x)
+dimHeight= tempDimHeight.replace('</', '')
+dimWidth = tempDimWidth.replace('</', '')
+dimDepth  = tempDimDepth.replace('</', '')
+
+print(dimHeight, dimWidth, dimDepth, dimSeat)
 
 # About Section: Holds data from the about section to store in each item descripton
 aboutDetailGroup = result.find('span', attrs={'data-tn':'pdp-item-description-content'})
