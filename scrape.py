@@ -79,4 +79,12 @@ priceDetailGroup = result.find('span', attrs={'data-tn':'price-amount'})
 pricePullOutData = str(priceDetailGroup)
 pricePullOutData = pricePullOutData.split('>')
 priceData = pricePullOutData[1].replace('</span', '')
-print(priceData)
+#print(priceData)
+
+# Set Size
+setSizeDetailGroup = result.find('div', attrs={'data-tn': 'pdp-spec-sold-as'})
+setSizeDetailGroup = setSizeDetailGroup.find('span', attrs={'data-tn': 'pdp-spec-detail-setSize'})
+setSizePullOutData = str(setSizeDetailGroup)
+setSizePullOutData = setSizePullOutData.split('>')
+setSizeData = setSizePullOutData[2].replace('</span', '')
+#print(setSizeData)
