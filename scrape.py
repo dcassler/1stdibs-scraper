@@ -13,7 +13,7 @@ import re
 
 
 
-url = 'https://www.1stdibs.com/furniture/seating/club-chairs/pair-of-modern-style-club-chairs/id-f_18808132/'
+url = 'https://www.1stdibs.com/furniture/seating/swivel-chairs/pair-of-barrel-back-swivel-chairs/id-f_18807992/'
 response = requests.get(url)
 print(response)
 result = BeautifulSoup(response.text, "html.parser")
@@ -80,4 +80,3 @@ pricePullOutData = str(priceDetailGroup)
 pricePullOutData = pricePullOutData.split('>')
 priceData = pricePullOutData[1].replace('</span', '')
 print(priceData)
-
