@@ -4,7 +4,8 @@ import time
 from bs4 import BeautifulSoup
 import re
 import shutil
-
+import os
+from tqdm import tqdm
 # Data used: 
 # picList = array of pictures
 # dimInch, dimCen, dimensions of obj 
@@ -48,13 +49,21 @@ finalFirst = fixedFirst[0]
 picList[0] = finalFirst
 
 # Download all of the images
+
+pathname = 'images'
+if not os.path.isdir(pathname):
+        os.makedirs(pathname)
 for image_url in picList:
     filename = image_url.split("/")[-1] 
     filename = filename.split("?")[0]
     filename = filename.split(".jpg")[0]
     filename = filename.split(".JPG")[0]
-    print(filename)
+    filename += ".jpeg"
+    filename = os.path.join(pathname, filename)
     r = requests.get(image_url, stream = True)
+    file_size = int(response.headers.get("Content-Length", 0))
+     # progress bar, changing the unit to bytes instead of iteration (default by tqdm)
+    progress = tqdm(response.iter_content(1024), f"Downloading {filename}", total=file_size, unit="B", unit_scale=True, unit_divisor=1024)
     # Check if the image was retrieved successfully
     if r.status_code == 200:
     # Set decode_content value to True, otherwise the downloaded image file's size will be zero.
