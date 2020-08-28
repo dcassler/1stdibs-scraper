@@ -13,12 +13,12 @@ from tqdm import tqdm
 
 
 
+def grabURL():
 
-
-url = 'https://www.1stdibs.com/furniture/seating/swivel-chairs/pair-of-barrel-back-swivel-chairs/id-f_18807992/'
-response = requests.get(url)
-print(response)
-result = BeautifulSoup(response.text, "html.parser")
+    url = 'https://www.1stdibs.com/furniture/seating/swivel-chairs/pair-of-barrel-back-swivel-chairs/id-f_18807992/'
+    response = requests.get(url)
+    result = BeautifulSoup(response.text, "html.parser")
+    return result
 
 
 
