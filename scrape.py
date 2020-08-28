@@ -3,6 +3,7 @@ import urllib.request
 import time
 from bs4 import BeautifulSoup
 import re
+import shutil
 
 # Data used: 
 # picList = array of pictures
@@ -46,6 +47,26 @@ finalFirst = fixedFirst[0]
 
 picList[0] = finalFirst
 
+# Download all of the images
+for image_url in picList:
+    filename = image_url.split("/")[-1] 
+    filename = filename.split("?")[0]
+    filename = filename.split(".jpg")[0]
+    filename = filename.split(".JPG")[0]
+    print(filename)
+    r = requests.get(image_url, stream = True)
+    # Check if the image was retrieved successfully
+    if r.status_code == 200:
+    # Set decode_content value to True, otherwise the downloaded image file's size will be zero.
+        r.raw.decode_content = True
+    # Open a local file with wb ( write binary ) permission.
+        with open(filename,'wb') as f:
+            shutil.copyfileobj(r.raw, f)
+        
+        print('Image sucessfully Downloaded: ',filename)
+    else:
+        print('Image Couldn\'t be retreived')
+
 # Grab Item Details
 
 # Dimensions
@@ -65,7 +86,7 @@ dimHeight= tempDimHeight.replace('</', '')
 dimWidth = tempDimWidth.replace('</', '')
 dimDepth  = tempDimDepth.replace('</', '')
 
-print(dimHeight, dimWidth, dimDepth, dimSeat)
+#print(dimHeight, dimWidth, dimDepth, dimSeat)
 
 # About Section: Holds data from the about section to store in each item descripton
 aboutDetailGroup = result.find('span', attrs={'data-tn':'pdp-item-description-content'})
