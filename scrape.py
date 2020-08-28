@@ -77,25 +77,34 @@ for image_url in picList:
         print('Image Couldn\'t be retreived')
 
 # Grab Item Details
+def grabItemDetails(result):
+    dimDetailGroup = result.find('div', attrs={'data-tn':'pdp-spec-dimensions'})
+    dimpullOutData = str(dimDetailGroup)
+    dimpullOutData = dimpullOutData.split('span>')
+    dimensions = [grabHeight(dimpullOutData), grabWidth(dimpullOutData), grabDepth(dimpullOutData)]
+    print(dimensions)
+def grabHeight(dimpullOutData):
+    tempDimHeight = dimpullOutData[1]
+    dimSeat = ''
+    if dimpullOutData[10]:
+        tempSeatHeight = dimpullOutData[10]
+        dimSeat = tempSeatHeight.replace('</','')
+    dimHeight= tempDimHeight.replace('</', '')
+    return dimHeight
 
-# Dimensions
-dimDetailGroup = result.find('div', attrs={'data-tn':'pdp-spec-dimensions'})
-dimpullOutData = str(dimDetailGroup)
-dimpullOutData = dimpullOutData.split('span>')
-tempDimHeight = dimpullOutData[1]
-tempDimWidth = dimpullOutData[4]
-tempDimDepth = dimpullOutData[7]
-dimSeat = ''
-if dimpullOutData[10]:
-    tempSeatHeight = dimpullOutData[10]
-    dimSeat = tempSeatHeight.replace('</','')
-#for x in dimpullOutData:
-   # print(x)
-dimHeight= tempDimHeight.replace('</', '')
-dimWidth = tempDimWidth.replace('</', '')
-dimDepth  = tempDimDepth.replace('</', '')
+def grabWidth(dimpullOutData):
+    tempDimWidth = dimpullOutData[4]
+    dimWidth = tempDimWidth.replace('</', '')
+    return dimWidth
 
-#print(dimHeight, dimWidth, dimDepth, dimSeat)
+def grabDepth(dimpullOutData):
+    tempDimDepth = dimpullOutData[7]
+    dimDepth = tempDimDepth.replace('</', '')
+    return dimDepth
+
+# Grab item Dimensions
+grabItemDetails(result)
+
 
 # About Section: Holds data from the about section to store in each item descripton
 aboutDetailGroup = result.find('span', attrs={'data-tn':'pdp-item-description-content'})
