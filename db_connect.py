@@ -8,5 +8,6 @@ db_connection = mysql.connector.connect(
 #print(db_connection)
 db_cursor = db_connection.cursor()
 db_cursor.execute("SHOW TABLES")
-for table in db_cursor:
-    print(table)
+tables = db_cursor.fetchall()
+chairs = tables[0]
+print(chairs)
