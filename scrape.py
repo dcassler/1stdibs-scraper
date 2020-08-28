@@ -106,28 +106,31 @@ def grabDepth(dimpullOutData):
 
 
 
+def grabAboutSection():
 
-# About Section: Holds data from the about section to store in each item descripton
-aboutDetailGroup = result.find('span', attrs={'data-tn':'pdp-item-description-content'})
-aboutPullOutData = str(aboutDetailGroup)
-aboutPullOutData = aboutPullOutData.split('>')
-aboutData = aboutPullOutData[1].replace('</span', '')
-#print(aboutData)
+    # About Section: Holds data from the about section to store in each item descripton
+    aboutDetailGroup = result.find('span', attrs={'data-tn':'pdp-item-description-content'})
+    aboutPullOutData = str(aboutDetailGroup)
+    aboutPullOutData = aboutPullOutData.split('>')
+    aboutData = aboutPullOutData[1].replace('</span', '')
+    print(aboutData)
 
-# Price 
-priceDetailGroup = result.find('span', attrs={'data-tn':'price-amount'})
-pricePullOutData = str(priceDetailGroup)
-pricePullOutData = pricePullOutData.split('>')
-priceData = pricePullOutData[1].replace('</span', '')
-#print(priceData)
+def grabPriceDetail():
+    # Price 
+    priceDetailGroup = result.find('span', attrs={'data-tn':'price-amount'})
+    pricePullOutData = str(priceDetailGroup)
+    pricePullOutData = pricePullOutData.split('>')
+    priceData = pricePullOutData[1].replace('</span', '')
+    print(priceData)
 
-# Set Size
-setSizeDetailGroup = result.find('div', attrs={'data-tn': 'pdp-spec-sold-as'})
-setSizeDetailGroup = setSizeDetailGroup.find('span', attrs={'data-tn': 'pdp-spec-detail-setSize'})
-setSizePullOutData = str(setSizeDetailGroup)
-setSizePullOutData = setSizePullOutData.split('>')
-setSizeData = setSizePullOutData[2].replace('</span', '')
-#print(setSizeData)
+def grabSetSize():
+    # Set Size
+    setSizeDetailGroup = result.find('div', attrs={'data-tn': 'pdp-spec-sold-as'})
+    setSizeDetailGroup = setSizeDetailGroup.find('span', attrs={'data-tn': 'pdp-spec-detail-setSize'})
+    setSizePullOutData = str(setSizeDetailGroup)
+    setSizePullOutData = setSizePullOutData.split('>')
+    setSizeData = setSizePullOutData[2].replace('</span', '')
+    print(setSizeData)
 
 
 # ----------- Function Calls ----------- #
