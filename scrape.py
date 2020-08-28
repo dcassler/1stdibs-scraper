@@ -81,17 +81,19 @@ def grabItemDetails(result):
     dimDetailGroup = result.find('div', attrs={'data-tn':'pdp-spec-dimensions'})
     dimpullOutData = str(dimDetailGroup)
     dimpullOutData = dimpullOutData.split('span>')
-    dimensions = [grabHeight(dimpullOutData), grabWidth(dimpullOutData), grabDepth(dimpullOutData)]
-    print(dimensions)
+    dimensions = [grabHeight(dimpullOutData), grabWidth(dimpullOutData), 
+    grabDepth(dimpullOutData), grabSeatHeight(dimpullOutData)]
+    # print(dimensions)
 def grabHeight(dimpullOutData):
     tempDimHeight = dimpullOutData[1]
-    dimSeat = ''
-    if dimpullOutData[10]:
-        tempSeatHeight = dimpullOutData[10]
-        dimSeat = tempSeatHeight.replace('</','')
     dimHeight= tempDimHeight.replace('</', '')
     return dimHeight
 
+def grabSeatHeight(dimpullOutData):
+    if dimpullOutData[10]:
+        tempSeatHeight = dimpullOutData[10]
+        dimSeat = tempSeatHeight.replace('</','')
+        return dimSeat
 def grabWidth(dimpullOutData):
     tempDimWidth = dimpullOutData[4]
     dimWidth = tempDimWidth.replace('</', '')
