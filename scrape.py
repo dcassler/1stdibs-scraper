@@ -6,12 +6,6 @@ import re
 import shutil
 import os
 from tqdm import tqdm
-# Data used: 
-# picList = array of pictures
-# dimInch, dimCen, dimensions of obj 
-# aboutData = about
-
-
 
 def grabURL():
 
@@ -19,8 +13,6 @@ def grabURL():
     response = requests.get(url)
     result = BeautifulSoup(response.text, "html.parser")
     return result
-
-
 
 def grabPicturesFromItem(result):
     # Grab all images in carousel
@@ -104,9 +96,7 @@ def grabDepth(dimpullOutData):
     dimDepth = tempDimDepth.replace('</', '')
     return dimDepth
 
-
-
-def grabAboutSection():
+def grabAboutSection(result):
 
     # About Section: Holds data from the about section to store in each item descripton
     aboutDetailGroup = result.find('span', attrs={'data-tn':'pdp-item-description-content'})
@@ -115,7 +105,7 @@ def grabAboutSection():
     aboutData = aboutPullOutData[1].replace('</span', '')
     print(aboutData)
 
-def grabPriceDetail():
+def grabPriceDetail(result):
     # Price 
     priceDetailGroup = result.find('span', attrs={'data-tn':'price-amount'})
     pricePullOutData = str(priceDetailGroup)
@@ -123,7 +113,7 @@ def grabPriceDetail():
     priceData = pricePullOutData[1].replace('</span', '')
     print(priceData)
 
-def grabSetSize():
+def grabSetSize(result):
     # Set Size
     setSizeDetailGroup = result.find('div', attrs={'data-tn': 'pdp-spec-sold-as'})
     setSizeDetailGroup = setSizeDetailGroup.find('span', attrs={'data-tn': 'pdp-spec-detail-setSize'})
@@ -132,11 +122,4 @@ def grabSetSize():
     setSizeData = setSizePullOutData[2].replace('</span', '')
     print(setSizeData)
 
-
-# ----------- Function Calls ----------- #
-
-
-#grabPicturesFromItem(result)
-
-#grabItemDimensions(result)
-
+main()
