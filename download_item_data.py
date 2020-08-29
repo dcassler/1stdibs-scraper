@@ -7,7 +7,7 @@ import shutil
 import os
 from tqdm import tqdm
 
-def grabURL():
+def grabURL(url):
 
     url = 'https://www.1stdibs.com/furniture/seating/swivel-chairs/pair-of-barrel-back-swivel-chairs/id-f_18807992/'
     response = requests.get(url)
@@ -97,8 +97,10 @@ def grabDepth(dimpullOutData):
     dimDepth = tempDimDepth.replace('</', '')
     return dimDepth
 
-def grabAboutSection(result):
 
+
+
+def grabAboutSection(result):
     # About Section: Holds data from the about section to store in each item descripton
     aboutDetailGroup = result.find('span', attrs={'data-tn':'pdp-item-description-content'})
     aboutPullOutData = str(aboutDetailGroup)
@@ -123,4 +125,13 @@ def grabSetSize(result):
     setSizeData = setSizePullOutData[2].replace('</span', '')
     print(setSizeData)
 
-main()
+def grabData(url):
+    # Feed url of item to get page data
+    result = grabURL(url)
+    # download photos from result 
+    grabPicturesFromItem(result) 
+    dimensions = grabItemDetails(result)
+    aboutData = grabAboutSection(result)
+    priceData =  grabPriceDetail(result)
+    setData = grabSetSize(result)
+    return [dimensions, aboutData, priceData, setData]
