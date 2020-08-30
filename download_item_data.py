@@ -11,7 +11,7 @@ from os import path
 
 def grabURL(url):
 
-    #url = 'https://www.1stdibs.com/furniture/seating/swivel-chairs/pair-of-barrel-back-swivel-chairs/id-f_18807992/'
+    url = 'https://www.1stdibs.com/furniture/seating/swivel-chairs/pair-of-barrel-back-swivel-chairs/id-f_18807992/'
     response = requests.get(url)
     result = BeautifulSoup(response.text, "html.parser")
     return result
@@ -144,4 +144,19 @@ def grabData(url):
     aboutData = grabAboutSection(result)
     priceData =  grabPriceDetail(result)
     setData = grabSetSize(result)
+    grabItemType(result)
     return [dimensions, aboutData, priceData, setData]
+
+def grabItemType(result):
+    try: 
+        setItemType = result.find('ol', attrs={'data-tn': 'breadcrumbs'})
+        setItemType = str(setItemType)
+        setItemType = setItemType.split('breadcrumb-item')
+        print(setItemType[-1])
+    except: 
+        return None
+
+
+
+
+grabData('')
