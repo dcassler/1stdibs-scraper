@@ -6,10 +6,12 @@ import re
 import shutil
 import os
 from tqdm import tqdm
+import os.path
+from os import path
 
 def grabURL(url):
 
-    url = 'https://www.1stdibs.com/furniture/seating/swivel-chairs/pair-of-barrel-back-swivel-chairs/id-f_18807992/'
+    #url = 'https://www.1stdibs.com/furniture/seating/swivel-chairs/pair-of-barrel-back-swivel-chairs/id-f_18807992/'
     response = requests.get(url)
     result = BeautifulSoup(response.text, "html.parser")
     return result
@@ -52,21 +54,21 @@ def grabPicturesFromItem(result):
         filename = filename.split(".JPG")[0]
         filename += ".jpeg"
         filename = os.path.join(pathname, filename)
-        r = requests.get(image_url, stream = True)
-        file_size = int(response.headers.get("Content-Length", 0))
-        # progress bar, changing the unit to bytes instead of iteration (default by tqdm)
-        progress = tqdm(response.iter_content(1024), f"Downloading {filename}", total=file_size, unit="B", unit_scale=True, unit_divisor=1024)
-        # Check if the image was retrieved successfully
-        if r.status_code == 200:
-        # Set decode_content value to True, otherwise the downloaded image file's size will be zero.
-            r.raw.decode_content = True
-        # Open a local file with wb ( write binary ) permission.
-            with open(filename,'wb') as f:
-                shutil.copyfileobj(r.raw, f)
-            
-            print('Image sucessfully Downloaded: ',filename)
-        else:
-            print('Image Couldn\'t be retreived')
+        if True != os.path.exists(filename):
+            r = requests.get(image_url, stream = True)
+            # Check if the image was retrieved successfully
+            if r.status_code == 200:
+            # Set decode_content value to True, otherwise the downloaded image file's size will be zero.
+                r.raw.decode_content = True
+            # Open a local file with wb ( write binary ) permission.
+                with open(filename,'wb') as f:
+                    shutil.copyfileobj(r.raw, f)
+                
+                print('Image sucessfully Downloaded: ',filename)
+            else:
+                print('Image Couldn\'t be retreived')
+        else: 
+            print('Image already sucessfully Downloaded: ',filename)
 
 # Grab Item Details
 def grabItemDetails(result):
@@ -83,19 +85,24 @@ def grabHeight(dimpullOutData):
     return dimHeight
 
 def grabSeatHeight(dimpullOutData):
-    if dimpullOutData[10]:
+    try: 
         tempSeatHeight = dimpullOutData[10]
         dimSeat = tempSeatHeight.replace('</','')
         return dimSeat
+    except IndexError:
+        return None
 def grabWidth(dimpullOutData):
     tempDimWidth = dimpullOutData[4]
     dimWidth = tempDimWidth.replace('</', '')
     return dimWidth
 
 def grabDepth(dimpullOutData):
-    tempDimDepth = dimpullOutData[7]
-    dimDepth = tempDimDepth.replace('</', '')
-    return dimDepth
+    try: 
+        tempDimDepth = dimpullOutData[7]
+        dimDepth = tempDimDepth.replace('</', '')
+        return dimDepth
+    except: 
+        return None
 
 
 
@@ -106,7 +113,7 @@ def grabAboutSection(result):
     aboutPullOutData = str(aboutDetailGroup)
     aboutPullOutData = aboutPullOutData.split('>')
     aboutData = aboutPullOutData[1].replace('</span', '')
-    print(aboutData)
+    return aboutData
 
 def grabPriceDetail(result):
     # Price 
@@ -114,16 +121,19 @@ def grabPriceDetail(result):
     pricePullOutData = str(priceDetailGroup)
     pricePullOutData = pricePullOutData.split('>')
     priceData = pricePullOutData[1].replace('</span', '')
-    print(priceData)
+    return priceData
 
 def grabSetSize(result):
     # Set Size
-    setSizeDetailGroup = result.find('div', attrs={'data-tn': 'pdp-spec-sold-as'})
-    setSizeDetailGroup = setSizeDetailGroup.find('span', attrs={'data-tn': 'pdp-spec-detail-setSize'})
-    setSizePullOutData = str(setSizeDetailGroup)
-    setSizePullOutData = setSizePullOutData.split('>')
-    setSizeData = setSizePullOutData[2].replace('</span', '')
-    print(setSizeData)
+    try: 
+        setSizeDetailGroup = result.find('div', attrs={'data-tn': 'pdp-spec-sold-as'})
+        setSizeDetailGroup = setSizeDetailGroup.find('span', attrs={'data-tn': 'pdp-spec-detail-setSize'})
+        setSizePullOutData = str(setSizeDetailGroup)
+        setSizePullOutData = setSizePullOutData.split('>')
+        setSizeData = setSizePullOutData[2].replace('</span', '')
+        return setSizeData
+    except: 
+        return None
 
 def grabData(url):
     # Feed url of item to get page data
