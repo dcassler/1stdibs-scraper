@@ -11,12 +11,12 @@ from os import path
 
 def grabURL(url):
 
-    url = 'https://www.1stdibs.com/furniture/seating/swivel-chairs/pair-of-barrel-back-swivel-chairs/id-f_18807992/'
+    #url = 'https://www.1stdibs.com/furniture/seating/swivel-chairs/pair-of-barrel-back-swivel-chairs/id-f_18807992/'
     response = requests.get(url)
     result = BeautifulSoup(response.text, "html.parser")
     return result
 
-def grabPicturesFromItem(result):
+def grabPicturesFromItem(result, itemType):
     # Grab all images in carousel
     pictureGroup = result.find('ul', attrs={'data-tn':'carousel-list-wrapper'})
     parsedPictureGroup = pictureGroup.contents
@@ -24,6 +24,7 @@ def grabPicturesFromItem(result):
     # Parse pictures to array
     i = 0
     picList = [] # Array of all pictures
+    picListNames = []
     while i < len(parsedPictureGroup):
         temp = str(pictureGroup.contents[i].find('img'))
         if temp != 'None':
@@ -44,7 +45,7 @@ def grabPicturesFromItem(result):
 
     # Download all of the images
 
-    pathname = 'images'
+    pathname = 'images/' + itemType
     if not os.path.isdir(pathname):
             os.makedirs(pathname)
     for image_url in picList:
@@ -65,10 +66,13 @@ def grabPicturesFromItem(result):
                     shutil.copyfileobj(r.raw, f)
                 
                 print('Image sucessfully Downloaded: ',filename)
+                picListNames.append(filename)
             else:
                 print('Image Couldn\'t be retreived')
         else: 
             print('Image already sucessfully Downloaded: ',filename)
+            picListNames.append(filename)
+    return picListNames
 
 # Grab Item Details
 def grabItemDetails(result):
@@ -139,24 +143,23 @@ def grabData(url):
     # Feed url of item to get page data
     result = grabURL(url)
     # download photos from result 
-    grabPicturesFromItem(result) 
+    itemType = grabItemType(result)
+    pictures = grabPicturesFromItem(result, itemType) 
     dimensions = grabItemDetails(result)
     aboutData = grabAboutSection(result)
     priceData =  grabPriceDetail(result)
     setData = grabSetSize(result)
-    grabItemType(result)
-    return [dimensions, aboutData, priceData, setData]
+    
+    return [dimensions, aboutData, priceData, setData, pictures]
 
 def grabItemType(result):
     try: 
         setItemType = result.find('ol', attrs={'data-tn': 'breadcrumbs'})
         setItemType = str(setItemType)
         setItemType = setItemType.split('breadcrumb-item')
-        print(setItemType[-1])
+        setItemType = setItemType[-1].split('/">')
+        setItemType = setItemType[1].split('</a')
+        itemType = str(setItemType[0])
+        return itemType
     except: 
         return None
-
-
-
-
-grabData('')
