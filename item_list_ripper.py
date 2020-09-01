@@ -1,8 +1,6 @@
-import download_item_data
 import requests
-import urllib.request
-import time
 from bs4 import BeautifulSoup
+import download_item_data
 # Store page url
 # https://www.1stdibs.com/dealers/mid-century-antiques/shop/furniture/
 
