@@ -43,4 +43,3 @@ def downloadItems():
             print(download_item_data.grabData(item))
             i += 1
 
-downloadItems()
