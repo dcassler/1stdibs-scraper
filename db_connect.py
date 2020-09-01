@@ -1,13 +1,25 @@
-import mysql.connector
-db_connection = mysql.connector.connect(
-    host = "localhost",
-    user = "newuser",
-    password = "password",
-    database = "midcentury",
-)
-#print(db_connection)
-db_cursor = db_connection.cursor()
-db_cursor.execute("SHOW TABLES")
-tables = db_cursor.fetchall()
-chairs = tables[0]
-print(chairs)
+import mysql.connector as connector
+
+def connection():
+
+    config = {
+        "user": "newuser",
+        "password": "password",
+        "host": "127.0.0.1",
+        "database": "midcentury"
+    }
+    try:
+        c = connector.connect(**config)
+        return c
+    except:
+        print ("connection error")
+        exit(1)
+
+
+def makeConnection(): #no error method
+    cn = connection()
+    cur = cn.cursor()
+    return cur
+    #cur.execute("show tables;")
+    #x = cur.fetchall()
+    
