@@ -46,38 +46,31 @@ def downloadItems():
             print('This is item ', i)
             data = download_item_data.grabData(item)
             # Parse out that data into variables to send to database
-            y = 0 
-            for x in data: 
-                print(y)
-                print(x)
-                print('\n')     
-                y += 1
+            
             height = data[0][0]
-            print(type(height))
+       
             width = data[0][1]
             depth = data[0][2]
             seatHeight = data[0][3]
             about = data[1]
-            print(type(about))
+         
             price = data[2]
             setsize = data[3]
-            print(type(setsize))
+      
             if(setsize == None):
                 setsize = "NULL"
             pictureList = data[4]
             pictures = ""
             pictures = pictures.join(pictureList)
-            print(height, '\n', width, '\n', depth, '\n', about, '\n')
-            name = "null"
-            itemtype = "null"
-           
-            #stmt = """INSERT INTO `Item` (`itemID`, `name`, `price`, `height`, `width`, `depth`, `about`, `setsize`, `pictureList`, `itemtype`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);""" % (None, name, price, height, width, depth, about, setsize, pictureList, itemtype)
-            #stmt = "INSERT INTO `Item` (`itemID`, `name`, `price`, `height`, `width`, `depth`, `about`, `setsize`, `pictureList`, `itemtype`) VALUES (0, 'Did this actually work?',0,0,0,0,0,0,0,0);"
+            print('Height', height, '\n', 'width', width, '\n', 'depth', depth, '\n', about, '\n')
+            if(depth == None):
+                depth == 'NULL'
+            name = data[6]
+            itemtype = data[5]
+            print(type(itemtype))
             
-            stringTest = ('This is a test')
-            print(type(stringTest))
             
-            stmt = "INSERT INTO `Item` (`itemID`, `name`, `price`, `height`, `width`, `depth`, `about`, `setsize`, `pictureList`, `itemtype`) VALUES ({}, {}, {}, {}, {}, {}, '{}', {}, '{}', {});".format(0, name, price, height, width, depth, about, setsize, pictures, itemtype)
+            stmt = "INSERT INTO `Item` (`itemID`, `name`, `price`, `height`, `width`, `depth`, `about`, `setsize`, `pictureList`, `itemtype`) VALUES ({}, '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}');".format(0, name, price, height, width, depth, about, setsize, pictures, itemtype)
             con.execute(stmt)
             db.commit() 
             print(data)

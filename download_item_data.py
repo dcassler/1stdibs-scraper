@@ -86,6 +86,11 @@ def grabItemDetails(result):
 def grabHeight(dimpullOutData):
     tempDimHeight = dimpullOutData[1]
     dimHeight= tempDimHeight.replace('</', '')
+    print('LOOK HERE', dimHeight)
+    dimHeight = dimHeight.replace('Height: ', '')
+    dimHeight = dimHeight.split('(')
+    dimHeight = dimHeight[0].replace('in.', '')
+    print(dimHeight[0])
     return dimHeight
 
 def grabSeatHeight(dimpullOutData):
@@ -98,12 +103,19 @@ def grabSeatHeight(dimpullOutData):
 def grabWidth(dimpullOutData):
     tempDimWidth = dimpullOutData[4]
     dimWidth = tempDimWidth.replace('</', '')
+    dimWidth = dimWidth.replace('Width: ', '')
+    dimWidth = dimWidth.split('(')
+    dimWidth = dimWidth[0].replace('in.', '')
     return dimWidth
 
 def grabDepth(dimpullOutData):
     try: 
         tempDimDepth = dimpullOutData[7]
         dimDepth = tempDimDepth.replace('</', '')
+        dimDepth = dimDepth.replace('Depth: ', '')
+        dimDepth = dimDepth.split('(')
+        dimDepth = dimDepth[0].replace('in.', '')
+        
         return dimDepth
     except: 
         return None
@@ -117,6 +129,7 @@ def grabAboutSection(result):
     aboutPullOutData = str(aboutDetailGroup)
     aboutPullOutData = aboutPullOutData.split('>')
     aboutData = aboutPullOutData[1].replace('</span', '')
+    aboutData = aboutData.replace("'", '`')
     return aboutData
 
 def grabPriceDetail(result):
@@ -125,6 +138,7 @@ def grabPriceDetail(result):
     pricePullOutData = str(priceDetailGroup)
     pricePullOutData = pricePullOutData.split('>')
     priceData = pricePullOutData[1].replace('</span', '')
+    priceData = priceData.replace('$', '')
     return priceData
 
 def grabSetSize(result):
@@ -139,6 +153,14 @@ def grabSetSize(result):
     except: 
         return None
 
+def grabNameData(result):
+    nameData = result.find('div', attrs={'data-tn': 'pdp-main-title'})
+    nameData = str(nameData)
+    nameData = nameData.split('>')
+    nameData = nameData[1].replace('</div', '')
+    nameData = nameData.replace("'", '`')
+    return nameData
+
 def grabData(url):
     # Feed url of item to get page data
     result = grabURL(url)
@@ -149,8 +171,9 @@ def grabData(url):
     aboutData = grabAboutSection(result)
     priceData =  grabPriceDetail(result)
     setData = grabSetSize(result)
-    
-    return [dimensions, aboutData, priceData, setData, pictures]
+    nameData = grabNameData(result)
+   
+    return [dimensions, aboutData, priceData, setData, pictures, itemType, nameData]
 
 def grabItemType(result):
     try: 
