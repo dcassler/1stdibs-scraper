@@ -12,7 +12,7 @@ def connection():
         c = connector.connect(**config)
         return c
     except:
-        print ("connection error")
+        print ("connection error, please double check your settings")
         exit(1)
 
 
